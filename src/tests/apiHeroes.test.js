@@ -1,8 +1,9 @@
 const assert = require('assert');
 const server = require('./../api');
 let app = {};
+
 describe.only('Suite de testes da API', function () {
-    before(async () => {
+    before(async function () {
         app = await server
     });
 
@@ -11,7 +12,8 @@ describe.only('Suite de testes da API', function () {
             method: 'GET',
             url: '/herois'
         });
-        const data = await JSON.parse(result.payload); //converte para um obj javascript
+
+        const data = JSON.parse(result.payload); //converte para um obj javascript
         const statusCode = result.statusCode
 
         assert.deepEqual(statusCode, 200);

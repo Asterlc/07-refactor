@@ -1,5 +1,8 @@
-class HeroRoutes {
+const BaseRoute = require('./base/baseRoute');
+
+class HeroRoutes extends BaseRoute {
     constructor(db) {
+        super(); //chamar classe pai primeiro
         this.db = db;
     }
 
