@@ -15,7 +15,6 @@ function mapRoutes(instance, methods) {
 
 }
 
-
 async function main() {
     const connection = MongoDB.connect();
     const ctx = new Context(new MongoDB(connection, HeroiSchema));

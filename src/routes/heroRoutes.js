@@ -11,7 +11,12 @@ class HeroRoutes extends BaseRoute {
             path: '/herois',
             method: 'GET',
             handler: (request, headers) => {
-                return this.db.read();
+                try {
+                    return this.db.read();
+                } catch (error) {
+                    console.log('Error heroRoutes:>>', error);
+                    return 'Serevr internal error'
+                }
             }
         }
     }
