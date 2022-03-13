@@ -2,7 +2,7 @@ const assert = require('assert');
 const server = require('./../api');
 let app = {};
 
-describe.only('Suite de testes da API', function () {
+describe('Suite de testes da API', function () {
     before(async function () {
         app = await server
     });
@@ -17,6 +17,7 @@ describe.only('Suite de testes da API', function () {
         const statusCode = result.statusCode
 
         assert.deepEqual(statusCode, 200);
-        assert.ok(Array.isArray(data));
+        assert.ok(Array.isArray(data)); //confirmar se os dados são arrays
+        
     });
 });

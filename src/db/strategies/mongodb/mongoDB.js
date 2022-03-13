@@ -27,10 +27,14 @@ class MongoDB extends ICrud {
     }
 
     static connect() { // métodos static não são instanciaveis
-        mongoose.connect(`mongodb://${user}:${pwd}@localhost:27017/herois`, { useNewUrlParser: true }, function (error) {
-            if (!error) return;
-            console.log('Falha para conectar ao MongoDB:>>>', error);
-        });
+        mongoose.connect(`mongodb://${user}:${pwd}@localhost:27017/herois`,
+            {
+                useNewUrlParser: true,
+            },
+            function (error) {
+                if (!error) return;
+                console.log('Falha para conectar ao MongoDB:>>>', error);
+            });
 
         const connection = mongoose.connection;
 
