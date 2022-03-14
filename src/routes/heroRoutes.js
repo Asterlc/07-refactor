@@ -12,10 +12,14 @@ class HeroRoutes extends BaseRoute {
             method: 'GET',
             handler: (request, headers) => {
                 try {
-                    return this.db.read();
+                    const { skip, limit, nome } = request.query;
+                    let query = {};
+
+                    if (nome) query.nome = nome;
+                    return this.db.read(query, parseInt(skip), parseInt(limit));
                 } catch (error) {
                     console.log('Error heroRoutes:>>', error);
-                    return 'Serevr internal error'
+                    return 'Internal server error'
                 }
             }
         }

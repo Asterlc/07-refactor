@@ -2,17 +2,15 @@ const Hapi = require('@hapi/hapi');
 const Context = require('./db/strategies/base/ctxStrategy');
 const MongoDB = require('./db/strategies/mongodb/mongoDB');
 const HeroiSchema = require('./db/strategies/mongodb/schemas/heroiSchema');
-const BaseRoute = require('./routes/base/baseRoute');
 const HeroRoute = require('./routes/heroRoutes');
+
 const server = new Hapi.server({
     port: 8050 || process.env.PORT
 });
 
+//methods é um array com os métodos CRUD da instancia da classe usada
 function mapRoutes(instance, methods) {
-    // methods = ['list'] // funciona
-    //methods é um array com os métodos CRUD da instancia da classe usada
     return methods.map(method => instance[method]());
-
 }
 
 async function main() {
@@ -28,5 +26,3 @@ async function main() {
 }
 
 module.exports = main();
-
-// main();
