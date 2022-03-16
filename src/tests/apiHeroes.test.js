@@ -49,7 +49,7 @@ describe('Suite de testes da API', function () {
 
     it('Listar herois - retornar Erro interno', async function () {
         const limit = 'AEEEE';
-        const errMessage = 'Internal Server Error'
+        const errMessage = 'Bad Request'
         const result = await app.inject({
             method: 'GET',
             url: `/herois?skip=0&limit=${limit}`
@@ -58,6 +58,6 @@ describe('Suite de testes da API', function () {
         const statusCode = result.statusCode;
 
         assert.deepEqual(data.error, errMessage);
-        assert.ok(statusCode === 500);
+        assert.ok(statusCode === 400);
     });
 });
