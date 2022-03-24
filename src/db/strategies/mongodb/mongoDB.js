@@ -74,7 +74,8 @@ class MongoDB extends ICrud {
     async update(id, item) {
         // this.defineModel();
         const r = await this._schema.updateOne({ _id: id }, { $set: item });
-        if (r.acknowledged === true && r.modifiedCount === 1) return item
+        // console.log('r:>>', r)
+        if (r.acknowledged === true && r.modifiedCount === 1) return { ...item, ...r };
         return false
     }
 

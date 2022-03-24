@@ -6,9 +6,24 @@ const MOCK_HEROI_CADASTRAR = {
     poder: 'Marreta Biônica'
 };
 
+const MOCK_HEROI_ATUALIZAR = {
+    nome: 'Sora',
+    poder: 'Poder'
+}
+
+let MOCK_ID = ''
+
 describe('Suite de testes da API', function () {
     before(async function () {
         app = await server
+        const result = await app.inject({
+            method: 'POST',
+            url: `/herois`,
+            payload: JSON.stringify(MOCK_HEROI_ATUALIZAR)
+        });
+
+        const data = JSON.parse(result.payload);
+        MOCK_ID = data._id;
     });
 
     it('listar /herois', async function () {
@@ -30,7 +45,7 @@ describe('Suite de testes da API', function () {
             method: 'GET',
             url: `/herois?skip=0&limit=${limit}`
         });
-        
+
         const data = JSON.parse(result.payload);
         const statusCode = result.statusCode;
 
@@ -72,12 +87,27 @@ describe('Suite de testes da API', function () {
             url: `/herois`,
             payload: MOCK_HEROI_CADASTRAR
         });
-        console.log('result', result.payload);
         const statusCode = result.statusCode;
-        const { message } = JSON.parse(result.payload);
-
+        const { message, _id } = JSON.parse(result.payload);
+        console.log('result', result.payload)
         assert.ok(statusCode === 200);
-        assert.notDeepStrictEqual(_id, undefined); // testa se a propriedade _id não está undefined
-        assert.deepEqual(message , 'Heroi cadastrado com sucesso!');
+        assert.notStrictEqual(_id, undefined); //testa se a propriedade _id não está undefined
+        assert.deepEqual(message, 'Heroi cadastrado com sucesso!');
+    });
+
+    it('Atualizar um heroi PATCH - /herois/:id ', async () => {
+        const expected = {
+            poder: 'Keyblade'
+        }
+
+        const result = await app.inject({
+            method: 'PATCH',
+            url: `/herois/${MOCK_ID}`,
+            payload: JSON.stringify(expected)
+        });
+        const statusCode = result.statusCode;
+        const data = JSON.parse(result.payload);
+        assert.ok(statusCode === 200);
+        assert.deepEqual(data.message, 'Heroi atualizado com sucesso!')
     });
 });
