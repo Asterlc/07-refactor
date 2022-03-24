@@ -34,6 +34,36 @@ class HeroRoutes extends BaseRoute {
                 }
             }
         }
+    };
+
+    create() {
+        return {
+            path: '/herois',
+            method: 'POST',
+            config: {
+                validate: {
+                    failAction: (request, headers, error) => {
+                        throw error;
+                    },
+                    payload: Joi.object({
+                        nome: Joi.string().required().min(3).max(100),
+                        poder: Joi.string().required().min(3).max(20),
+                    })
+                }
+            },
+            handler: async (request) => {
+                try {
+                    const { nome, poder } = request.payload
+                    const result = await this.db.create({ nome, poder });
+                    return {
+                        message: 'Heroi cadastrado com sucesso!',
+                        _id: result._id
+                    }
+                } catch (error) {
+                    console.log('error:>>', error);
+                }
+            }
+        }
     }
 }
 

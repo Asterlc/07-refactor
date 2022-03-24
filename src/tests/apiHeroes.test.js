@@ -1,6 +1,10 @@
 const assert = require('assert');
 const server = require('./../api');
 let app = {};
+const MOCK_HEROI_CADASTRAR = {
+    nome: 'Chapolin',
+    poder: 'Marreta Biônica'
+};
 
 describe('Suite de testes da API', function () {
     before(async function () {
@@ -26,6 +30,7 @@ describe('Suite de testes da API', function () {
             method: 'GET',
             url: `/herois?skip=0&limit=${limit}`
         });
+        
         const data = JSON.parse(result.payload);
         const statusCode = result.statusCode;
 
@@ -59,5 +64,20 @@ describe('Suite de testes da API', function () {
 
         assert.deepEqual(data.error, errMessage);
         assert.ok(statusCode === 400);
+    });
+
+    it('Cadastrar herois POST - /herois', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: `/herois`,
+            payload: MOCK_HEROI_CADASTRAR
+        });
+        console.log('result', result.payload);
+        const statusCode = result.statusCode;
+        const { message } = JSON.parse(result.payload);
+
+        assert.ok(statusCode === 200);
+        assert.notDeepStrictEqual(_id, undefined); // testa se a propriedade _id não está undefined
+        assert.deepEqual(message , 'Heroi cadastrado com sucesso!');
     });
 });
