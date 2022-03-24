@@ -88,10 +88,10 @@ class HeroRoutes extends BaseRoute {
                     // const dataString = JSON.stringify(payload);
                     // const data = JSON.parse(dataString);
                     const data = JSON.parse(JSON.stringify(payload));
-                    console.log('data', data)
                     const result = await this.db.update(id, data);
+                    console.log('result 93', result)
 
-                    if (result.modifiedCount != 1) return { message: 'Não foi possível atualizar' };
+                    if (result.modifiedCount != 1 || !result) return { message: 'Não foi possível atualizar' };
                     return {
                         message: 'Heroi atualizado com sucesso!',
                         _id: id

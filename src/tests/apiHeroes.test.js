@@ -110,4 +110,26 @@ describe('Suite de testes da API', function () {
         assert.ok(statusCode === 200);
         assert.deepEqual(data.message, 'Heroi atualizado com sucesso!')
     });
+
+    it('Não deve atualizar um heroi PATCH - ID INCORRETO', async () => {
+        MOCK_ID = "623bdb92820385c4bb92709a" //id deletado da base
+        const expected = {
+            poder: 'Keyblade'
+        }
+
+        const result = await app.inject({
+            method: 'PATCH',
+            url: `/herois/${MOCK_ID}`,
+            payload: JSON.stringify(expected)
+        });
+        console.log('MOCK_ID', MOCK_ID)
+        const statusCode = result.statusCode;
+        console.log('statusCode', statusCode)
+        const data = JSON.parse(result.payload);
+        console.log('data', data)
+        assert.ok(statusCode === 200);
+        assert.deepEqual(data.message, 'Não foi possível atualizar');
+    });
+
+    
 });
