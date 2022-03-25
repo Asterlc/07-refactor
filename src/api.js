@@ -11,7 +11,7 @@ const server = new Hapi.server({
 //methods é um array com os métodos CRUD da instancia da classe usada
 function mapRoutes(instance, methods) {
     return methods.map(method => instance[method]());
-}
+};
 
 async function main() {
     const connection = MongoDB.connect();
@@ -19,10 +19,10 @@ async function main() {
     await server.route([
         ...mapRoutes(new HeroRoute(ctx), HeroRoute.methods())
     ]);
-    
+
     await server.start();
     console.log(`Server listen on port: ${server.info.port}`);
     return server;
-}
+};
 
 module.exports = main();

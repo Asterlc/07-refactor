@@ -9,21 +9,34 @@ const MOCK_HEROI_CADASTRAR = {
 const MOCK_HEROI_ATUALIZAR = {
     nome: 'Sora',
     poder: 'Poder'
-}
+};
+const MOCK_HEROI_DELETAR = {
+    nome: 'Libélula',
+    poder: 'Comédia'
+};
 
-let MOCK_ID = ''
+let MOCK_ID = '';
+let MOCK_ID_DELETAR = '';
 
 describe('Suite de testes da API', function () {
     before(async function () {
         app = await server
-        const result = await app.inject({
+        const resultUpdate = await app.inject({
             method: 'POST',
             url: `/herois`,
             payload: JSON.stringify(MOCK_HEROI_ATUALIZAR)
         });
 
-        const data = JSON.parse(result.payload);
-        MOCK_ID = data._id;
+        const dataUpdate = JSON.parse(resultUpdate.payload);
+        MOCK_ID = dataUpdate._id;
+
+        const resultDelete = await app.inject({
+            method: 'POST',
+            url: `/herois`,
+            payload: JSON.stringify(MOCK_HEROI_DELETAR)
+        });
+        const dataDelete = JSON.parse(resultDelete.payload);
+        MOCK_ID_DELETAR = dataDelete._id;
     });
 
     it('listar /herois', async function () {
@@ -89,7 +102,7 @@ describe('Suite de testes da API', function () {
         });
         const statusCode = result.statusCode;
         const { message, _id } = JSON.parse(result.payload);
-        console.log('result', result.payload)
+
         assert.ok(statusCode === 200);
         assert.notStrictEqual(_id, undefined); //testa se a propriedade _id não está undefined
         assert.deepEqual(message, 'Heroi cadastrado com sucesso!');
@@ -98,7 +111,7 @@ describe('Suite de testes da API', function () {
     it('Atualizar um heroi PATCH - /herois/:id ', async () => {
         const expected = {
             poder: 'Keyblade'
-        }
+        };
 
         const result = await app.inject({
             method: 'PATCH',
@@ -108,28 +121,38 @@ describe('Suite de testes da API', function () {
         const statusCode = result.statusCode;
         const data = JSON.parse(result.payload);
         assert.ok(statusCode === 200);
-        assert.deepEqual(data.message, 'Heroi atualizado com sucesso!')
+        assert.deepEqual(data.message, 'Heroi atualizado com sucesso!');
     });
 
     it('Não deve atualizar um heroi PATCH - ID INCORRETO', async () => {
         MOCK_ID = "623bdb92820385c4bb92709a" //id deletado da base
         const expected = {
             poder: 'Keyblade'
-        }
+        };
 
         const result = await app.inject({
             method: 'PATCH',
             url: `/herois/${MOCK_ID}`,
             payload: JSON.stringify(expected)
         });
-        console.log('MOCK_ID', MOCK_ID)
         const statusCode = result.statusCode;
-        console.log('statusCode', statusCode)
         const data = JSON.parse(result.payload);
-        console.log('data', data)
+
         assert.ok(statusCode === 200);
         assert.deepEqual(data.message, 'Não foi possível atualizar');
     });
 
-    
+    it("Deletar um heroi - /heroi/:id", async () => {
+        const expected = { message: 'Heroi removido com sucesso!' };
+        const result = await app.inject({
+            method: 'DELETE',
+            url: `/herois/${MOCK_ID_DELETAR}`,
+        });
+        console.log('result.payload', result.payload)
+        const statusCode = result.statusCode;
+        const data = JSON.parse(result.payload);
+
+        assert.ok(statusCode === 200);
+        assert.deepEqual(data.message, expected.message);
+    });
 });

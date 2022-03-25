@@ -72,6 +72,9 @@ class HeroRoutes extends BaseRoute {
             method: 'PATCH', //atualização parcial
             config: {
                 validate: {
+                    failAction: (request, headers, error) => {
+                        throw error;
+                    },
                     params: Joi.object({
                         id: Joi.string().required()
                     }),
@@ -89,7 +92,6 @@ class HeroRoutes extends BaseRoute {
                     // const data = JSON.parse(dataString);
                     const data = JSON.parse(JSON.stringify(payload));
                     const result = await this.db.update(id, data);
-                    console.log('result 93', result)
 
                     if (result.modifiedCount != 1 || !result) return { message: 'Não foi possível atualizar' };
                     return {
@@ -102,6 +104,36 @@ class HeroRoutes extends BaseRoute {
                 }
             }
         }
+    }
+
+    delete() {
+        return {
+            path: '/herois/{id}',
+            method: 'DELETE',
+            config: {
+                // failAction: (request, headers, error) => {
+                //     throw error;
+                // },
+                validate: {
+                    params: Joi.object({
+                        id: Joi.string().required()
+                    })
+                }
+            },
+            handler: async (request) => {
+                try {
+                    const { id } = request.params;
+                    const result = await this.db.delete(id);
+                    if (result === false) return { message: "Falha na operação delete" };
+                    return {
+                        message: `Heroi removido com sucesso!`,
+                        _id: `${id}`
+                    };
+                } catch (error) {
+                    console.log('delete error:>>', error);
+                }
+            }
+        };
     }
 }
 
