@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 
 const heroiSchema = {
+    name: 'herois',
     schema:
     {
         id: {
@@ -26,7 +27,6 @@ const heroiSchema = {
 
     }
 }
-
 module.exports = heroiSchema
 
 
