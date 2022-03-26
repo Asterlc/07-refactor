@@ -1,5 +1,11 @@
 const BaseRoute = require('./base/baseRoute');
 const Joi = require('joi');
+const Boom = require('@hapi/boom');
+const headers = Joi.object({
+    Authorization: Joi.string().required()
+}).unknown();
+
+
 class HeroRoutes extends BaseRoute {
     constructor(db) {
         super(); //chamar classe pai primeiro
@@ -16,11 +22,12 @@ class HeroRoutes extends BaseRoute {
                     failAction: (request, headers, error) => {
                         throw error;
                     },
+                    headers,
                     query: Joi.object({
                         skip: Joi.number().integer().default(0),
                         limit: Joi.number().integer().default(10),
                         nome: Joi.string().min(3).max(100)
-                    })
+                    }),
                 }
             },
             handler: (request, headers) => {
@@ -31,7 +38,7 @@ class HeroRoutes extends BaseRoute {
                     return this.db.read(query, parseInt(skip), parseInt(limit));
                 } catch (error) {
                     console.log('Error heroRoutes:>>', error);
-                    return 'Internal server error'
+                    return Boom.internal();
                 }
             }
         }
@@ -47,6 +54,7 @@ class HeroRoutes extends BaseRoute {
                     failAction: (request, headers, error) => {
                         throw error;
                     },
+                    headers,
                     payload: Joi.object({
                         nome: Joi.string().required().min(3).max(100),
                         poder: Joi.string().required().min(3).max(20),
@@ -78,6 +86,7 @@ class HeroRoutes extends BaseRoute {
                     failAction: (request, headers, error) => {
                         throw error;
                     },
+                    headers,
                     params: Joi.object({
                         id: Joi.string().required()
                     }),
@@ -119,6 +128,7 @@ class HeroRoutes extends BaseRoute {
                 // },
                 tags: ['api'],
                 validate: {
+                    headers,
                     params: Joi.object({
                         id: Joi.string().required()
                     })
