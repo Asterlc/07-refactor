@@ -23,7 +23,7 @@ const MOCK_HEROI_DELETAR = {
 let MOCK_ID = '';
 let MOCK_ID_DELETAR = '';
 
-describe.only('Suite de testes da API', function () {
+describe('Suite de testes da API', function () {
     before(async function () {
         app = await server
         const resultUpdate = await app.inject({
