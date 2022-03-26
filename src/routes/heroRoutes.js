@@ -11,6 +11,7 @@ class HeroRoutes extends BaseRoute {
             path: '/herois',
             method: 'GET',
             config: {
+                tags: ['api'],
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -41,6 +42,7 @@ class HeroRoutes extends BaseRoute {
             path: '/herois',
             method: 'POST',
             config: {
+                tags: ['api'],
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -71,6 +73,7 @@ class HeroRoutes extends BaseRoute {
             path: '/herois/{id}',
             method: 'PATCH', //atualização parcial
             config: {
+                tags: ['api'],
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -114,6 +117,7 @@ class HeroRoutes extends BaseRoute {
                 // failAction: (request, headers, error) => {
                 //     throw error;
                 // },
+                tags: ['api'],
                 validate: {
                     params: Joi.object({
                         id: Joi.string().required()
