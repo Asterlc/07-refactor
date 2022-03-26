@@ -1,5 +1,10 @@
 const assert = require('assert');
 const server = require('./../api');
+// const authUser = require('../routes/authRoute');
+const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoxLCJpYXQiOjE2NDgzMTQ4OTB9.5mD5FGDPkVDVKNArsvGQBmfVJkbbFhSkfKge430-LQc"
+const headers = {
+    authorization: TOKEN
+};
 let app = {};
 const MOCK_HEROI_CADASTRAR = {
     nome: 'Chapolin',
@@ -18,12 +23,13 @@ const MOCK_HEROI_DELETAR = {
 let MOCK_ID = '';
 let MOCK_ID_DELETAR = '';
 
-describe('Suite de testes da API', function () {
+describe.only('Suite de testes da API', function () {
     before(async function () {
         app = await server
         const resultUpdate = await app.inject({
             method: 'POST',
             url: `/herois`,
+            headers,
             payload: JSON.stringify(MOCK_HEROI_ATUALIZAR)
         });
 
@@ -33,6 +39,7 @@ describe('Suite de testes da API', function () {
         const resultDelete = await app.inject({
             method: 'POST',
             url: `/herois`,
+            headers,
             payload: JSON.stringify(MOCK_HEROI_DELETAR)
         });
         const dataDelete = JSON.parse(resultDelete.payload);
@@ -42,7 +49,8 @@ describe('Suite de testes da API', function () {
     it('listar /herois', async function () {
         const result = await app.inject({
             method: 'GET',
-            url: '/herois?skip=0&limit=0'
+            url: '/herois?skip=0&limit=0',
+            headers,
         });
         const data = JSON.parse(result.payload); //converte para um obj javascript
         const statusCode = result.statusCode
@@ -56,7 +64,8 @@ describe('Suite de testes da API', function () {
         const limit = 3;
         const result = await app.inject({
             method: 'GET',
-            url: `/herois?skip=0&limit=${limit}`
+            url: `/herois?skip=0&limit=${limit}`,
+            headers,
         });
 
         const data = JSON.parse(result.payload);
@@ -71,7 +80,8 @@ describe('Suite de testes da API', function () {
         const nome = 'Barry Allen';
         const result = await app.inject({
             method: 'GET',
-            url: `/herois?skip=0&limit=${limit}&nome=${nome}`
+            url: `/herois?skip=0&limit=${limit}&nome=${nome}`,
+            headers,
         });
         const [data] = JSON.parse(result.payload);
         const statusCode = result.statusCode;
@@ -85,7 +95,8 @@ describe('Suite de testes da API', function () {
         const errMessage = 'Bad Request'
         const result = await app.inject({
             method: 'GET',
-            url: `/herois?skip=0&limit=${limit}`
+            url: `/herois?skip=0&limit=${limit}`,
+            headers,
         });
         const data = JSON.parse(result.payload);
         const statusCode = result.statusCode;
@@ -98,7 +109,8 @@ describe('Suite de testes da API', function () {
         const result = await app.inject({
             method: 'POST',
             url: `/herois`,
-            payload: MOCK_HEROI_CADASTRAR
+            payload: MOCK_HEROI_CADASTRAR,
+            headers,
         });
         const statusCode = result.statusCode;
         const { message, _id } = JSON.parse(result.payload);
@@ -116,6 +128,7 @@ describe('Suite de testes da API', function () {
         const result = await app.inject({
             method: 'PATCH',
             url: `/herois/${MOCK_ID}`,
+            headers,
             payload: JSON.stringify(expected)
         });
         const statusCode = result.statusCode;
@@ -133,6 +146,7 @@ describe('Suite de testes da API', function () {
         const result = await app.inject({
             method: 'PATCH',
             url: `/herois/${MOCK_ID}`,
+            headers,
             payload: JSON.stringify(expected)
         });
         const statusCode = result.statusCode;
@@ -147,10 +161,11 @@ describe('Suite de testes da API', function () {
         const result = await app.inject({
             method: 'DELETE',
             url: `/herois/${MOCK_ID_DELETAR}`,
+            headers,
         });
         const statusCode = result.statusCode;
         const data = JSON.parse(result.payload);
-        
+
         assert.ok(statusCode === 200);
         assert.deepEqual(data.message, expected.message);
     });
