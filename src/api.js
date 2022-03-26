@@ -3,6 +3,9 @@ const Context = require('./db/strategies/base/ctxStrategy');
 const MongoDB = require('./db/strategies/mongodb/mongoDB');
 const HeroiSchema = require('./db/strategies/mongodb/schemas/heroiSchema');
 const HeroRoute = require('./routes/heroRoutes');
+const HapiSwagger = require('hapi-swagger');
+const HapiVision = require('@hapi/vision');
+const HapiInert = require('@hapi/inert');
 
 const server = new Hapi.server({
     port: 8050 || process.env.PORT
@@ -16,9 +19,27 @@ function mapRoutes(instance, methods) {
 async function main() {
     const connection = MongoDB.connect();
     const ctx = new Context(new MongoDB(connection, HeroiSchema));
-    await server.route([
-        ...mapRoutes(new HeroRoute(ctx), HeroRoute.methods())
+    // await server.route([
+    //     ...mapRoutes(new HeroRoute(ctx), HeroRoute.methods())
+    // ]); Não haverão ourtas rotas.
+
+    const swaggerOptions = {
+        info: {
+            title: 'API Herois - Imersão NodeJS',
+            version: 'v1.0'
+        }
+    };
+
+    await server.register([
+        HapiVision,
+        HapiInert,
+        {
+            plugin: HapiSwagger,
+            options: swaggerOptions
+        }
     ]);
+
+    await server.route(mapRoutes(new HeroRoute(ctx), HeroRoute.methods()));
 
     await server.start();
     console.log(`Server listen on port: ${server.info.port}`);

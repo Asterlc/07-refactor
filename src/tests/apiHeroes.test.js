@@ -148,10 +148,9 @@ describe('Suite de testes da API', function () {
             method: 'DELETE',
             url: `/herois/${MOCK_ID_DELETAR}`,
         });
-        console.log('result.payload', result.payload)
         const statusCode = result.statusCode;
         const data = JSON.parse(result.payload);
-
+        
         assert.ok(statusCode === 200);
         assert.deepEqual(data.message, expected.message);
     });
