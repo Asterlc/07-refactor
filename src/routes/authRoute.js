@@ -1,8 +1,8 @@
 const BaseRoute = require('./base/baseRoute');
+const pwdHelper = require('../helpers/passwordHelper');
 const Joi = require('joi');
 const Boom = require('@hapi/boom');
 const JWT = require('jsonwebtoken');
-
 
 const MOCK_USER = {
     username: 'tester',
@@ -10,9 +10,10 @@ const MOCK_USER = {
 }
 
 class AuthRoutes extends BaseRoute {
-    constructor(secret) {
+    constructor(secret, db) {
         super();
         this.secret = secret;
+        this.db = db;
     }
 
     login() {
@@ -35,13 +36,26 @@ class AuthRoutes extends BaseRoute {
                 },
                 handler: async (request) => {
                     const { username, password } = request.payload;
+                    const [user] = await this.db.read({
+                        username: username.toLowerCase()
+                    });
 
-                    if (username.toLowerCase() !== MOCK_USER.username || password !== MOCK_USER.password) {
-                        return Boom.unauthorized();
+                    if (!user) {
+                        return Boom.unauthorized('Usuário informado não existe!');
                     };
+                    const match = await pwdHelper.comparePassword(password, user.password)
+
+                    if (!match) {
+                        return Boom.unauthorized('Usuario ou senha inválido!');
+                    }
+                    // if (username.toLowerCase() !== MOCK_USER.username || password !== MOCK_USER.password) {
+                    //     return Boom.unauthorized();
+                    // };
                     //Simula um usuário no banco, passando uma chave secreta.
+                    
                     const token = JWT.sign({
-                        username: username, id: 1
+                        username: username,
+                        id: user.id
                     }, this.secret);
 
                     return {
