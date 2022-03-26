@@ -29,10 +29,16 @@ class Postgres extends ICrud {
         }
     }
 
-    async update(id, item) {
+    async update(id, item, upsert = false) {
         try {
+            if(upsert){
+                const [upsertItem] = await this._schema.upsert(item);
+                return item;
+            }
+            console.log('update')
             const [updateItem] = await this._schema.update(item, { where: { id: id } });
-            if (updateItem === 1) return item
+            // const [updateItem] = await this._schema[fn](item, { where: { id: id } });
+            if (updateItem === 1) return item;
         } catch (error) {
             throw error
         }
