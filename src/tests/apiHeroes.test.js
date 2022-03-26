@@ -1,10 +1,10 @@
 const assert = require('assert');
 const server = require('./../api');
 // const authUser = require('../routes/authRoute');
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoxLCJpYXQiOjE2NDgzMTQ4OTB9.5mD5FGDPkVDVKNArsvGQBmfVJkbbFhSkfKge430-LQc"
+const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RlciIsImlkIjoxLCJpYXQiOjE2NDgzMTQ4OTB9.5mD5FGDPkVDVKNArsvGQBmfVJkbbFhSkfKge430-LQc"
 const headers = {
-    Authorization: token
-}
+    authorization: TOKEN
+};
 let app = {};
 const MOCK_HEROI_CADASTRAR = {
     nome: 'Chapolin',
@@ -23,7 +23,7 @@ const MOCK_HEROI_DELETAR = {
 let MOCK_ID = '';
 let MOCK_ID_DELETAR = '';
 
-describe('Suite de testes da API', function () {
+describe.only('Suite de testes da API', function () {
     before(async function () {
         app = await server
         const resultUpdate = await app.inject({

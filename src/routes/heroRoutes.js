@@ -1,8 +1,9 @@
 const BaseRoute = require('./base/baseRoute');
 const Joi = require('joi');
 const Boom = require('@hapi/boom');
+
 const headers = Joi.object({
-    Authorization: Joi.string().required()
+    authorization: Joi.string().required()
 }).unknown();
 
 
