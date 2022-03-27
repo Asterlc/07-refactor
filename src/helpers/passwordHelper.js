@@ -3,7 +3,7 @@ const { promisify } = require('util');
 
 const hashAsync = promisify(BCrypt.hash);
 const compareAsync = promisify(BCrypt.compare);
-const SALT = 3
+const SALT = parseInt(process.env.SALT_PWD);
 
 class PasswordHelper {
     static hashPassword(pass) {
