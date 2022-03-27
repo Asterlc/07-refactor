@@ -1,6 +1,6 @@
 const ICrud = require('./../interfaces/interfaceCrud');
 const Sequelize = require('sequelize');
-const { user, pwd } = require('../access/keyPostgres');
+// const { user, pwd } = require('../access/keyPostgres');
 
 class Postgres extends ICrud {
     constructor(connection, schema) {
