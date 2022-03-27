@@ -84,14 +84,9 @@ class Postgres extends ICrud {
         };
         const connection = new Sequelize(process.env.POSTGRES_URL,
             {
-                host: 'localhost', //devido ao docker neste caso
-                dialect: 'postgres',
-                quoteIdentifiers: false, //ignorar case sensitive
-                operatorAliases: false, // erros de deprecade ignorados
-                omitNull: false, //necessário para resolver id auto increment
-                logging: false, //retirar os logs ne execução
-                ssl: process.env.SSL_DB,
-                dialectOptions
+                quoteIdentifiers: false,
+                logging: false,
+                dialectOptions,
             });
         // const connection = new Sequelize(
         //     'heroes',
