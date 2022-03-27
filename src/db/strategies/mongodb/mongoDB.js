@@ -1,6 +1,6 @@
 const ICrud = require('./../interfaces/interfaceCrud');
 const mongoose = require('mongoose');
-const { user, pwd } = require('../access/keyMongodb');
+// const { user, pwd } = require('../access/keyMongodb');
 const statusDictionary = {
     0: 'DESCONECTADO',
     1: 'CONECTADO',
