@@ -103,13 +103,13 @@ class Postgres extends ICrud {
         // );
 
         // await this.defineModel();
-        console.log('Conectado ao Postgres');
         return connection;
     }
 
     async isConnected() {
         try {
             await this._connection.authenticate();
+            console.log('Conectado ao Postgres');
             return true
         } catch (error) {
             console.log('error', error);
