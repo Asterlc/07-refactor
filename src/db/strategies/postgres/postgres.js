@@ -87,7 +87,7 @@ class Postgres extends ICrud {
                 quoteIdentifiers: false,
                 logging: false,
                 dialectOptions,
-            });
+            });            
         // const connection = new Sequelize(
         //     'heroes',
         //     `${user}`,
@@ -103,6 +103,7 @@ class Postgres extends ICrud {
         // );
 
         // await this.defineModel();
+        console.log('Conectado ao Postgres');
         return connection;
     }
 
