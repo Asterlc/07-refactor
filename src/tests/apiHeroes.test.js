@@ -10,6 +10,10 @@ const MOCK_HEROI_CADASTRAR = {
     nome: 'Chapolin',
     poder: 'Marreta Biônica'
 };
+const MOCK_HEROI_CADASTRAR_PROD = {
+    nome: 'Barry Allen',
+    poder: 'Speed'
+};
 
 const MOCK_HEROI_ATUALIZAR = {
     nome: 'Sora',
@@ -25,7 +29,14 @@ let MOCK_ID_DELETAR = '';
 
 describe('Suite de testes da API', function () {
     before(async function () {
-        app = await server
+        app = await server;
+        await app.inject({
+            method: 'POST',
+            url: `/herois`,
+            headers,
+            payload: JSON.stringify(MOCK_HEROI_CADASTRAR_PROD)
+        });
+
         const resultUpdate = await app.inject({
             method: 'POST',
             url: `/herois`,

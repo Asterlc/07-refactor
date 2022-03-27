@@ -71,7 +71,17 @@ class Postgres extends ICrud {
     }
 
     static connect() {
-
+        let dialectOptions = {}
+        const SSL_DB = process.env.SSL_DB === 'true' ? true : undefined;
+        const SSL_DB_REJECT = process.env.SSL_DB_REJECT === 'false' ? false : undefined;
+        if (SSL_DB) {
+            dialectOptions = {
+                ssl: {
+                    require: SSL_DB,
+                    rejectUnauthorized: SSL_DB_REJECT,
+                }
+            };
+        };
         const connection = new Sequelize(process.env.POSTGRES_URL,
             {
                 host: 'localhost', //devido ao docker neste caso
@@ -81,9 +91,7 @@ class Postgres extends ICrud {
                 omitNull: false, //necessário para resolver id auto increment
                 logging: false, //retirar os logs ne execução
                 ssl: process.env.SSL_DB,
-                dialectOptions: {
-                    ssl:process.env.SSL_DB
-                }
+                dialectOptions
             });
         // const connection = new Sequelize(
         //     'heroes',
