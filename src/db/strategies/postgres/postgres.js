@@ -1,6 +1,6 @@
 const ICrud = require('./../interfaces/interfaceCrud');
 const Sequelize = require('sequelize');
-const { user, pwd } = require('../access/keyPostgres');
+// const { user, pwd } = require('../access/keyPostgres');
 
 class Postgres extends ICrud {
     constructor(connection, schema) {
@@ -71,19 +71,22 @@ class Postgres extends ICrud {
     }
 
     static connect() {
-
+        let dialectOptions = {}
+        const SSL_DB = process.env.SSL_DB === 'true' ? true : undefined;
+        const SSL_DB_REJECT = process.env.SSL_DB_REJECT === 'false' ? false : undefined;
+        if (SSL_DB) {
+            dialectOptions = {
+                ssl: {
+                    require: SSL_DB,
+                    rejectUnauthorized: SSL_DB_REJECT,
+                }
+            };
+        };
         const connection = new Sequelize(process.env.POSTGRES_URL,
             {
-                host: 'localhost', //devido ao docker neste caso
-                dialect: 'postgres',
-                quoteIdentifiers: false, //ignorar case sensitive
-                operatorAliases: false, // erros de deprecade ignorados
-                omitNull: false, //necessário para resolver id auto increment
-                logging: false, //retirar os logs ne execução
-                ssl: process.env.SSL_DB,
-                dialectOptions: {
-                    ssl:process.env.SSL_DB
-                }
+                quoteIdentifiers: false,
+                logging: false,
+                dialectOptions,
             });
         // const connection = new Sequelize(
         //     'heroes',
