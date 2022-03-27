@@ -26,8 +26,8 @@ class MongoDB extends ICrud {
         return statusDictionary[mongoose.connection.readyState];
     }
 
-    static connect() { // métodos static não são instanciaveis
-        mongoose.connect(`mongodb://${user}:${pwd}@localhost:27017/herois`,
+    static connect() { // métodos static não são instanciáveis
+        mongoose.connect(process.env.MONGODB_URL,
             {
                 useNewUrlParser: true,
             },

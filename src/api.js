@@ -1,5 +1,17 @@
+//Configurações de ambiente
+const { config } = require('dotenv');
+const { join } = require('path'); // nativo NodeJS
+const { ok } = require('assert');
+const env = process.env.NODE_ENV || "dev";
+ok(env === 'prod' || env === 'dev', 'A env é inválida. Ou .prod ou .dev')
+const configPath = join(__dirname,'./config', `.env.${env}`);
+console.log('CurrentEnv:>>', env);
+config({
+    path: configPath
+});
+//Lib de roteamento
 const Hapi = require('@hapi/hapi');
-//Gerencia as estratégias
+//Gerenciamento das estratégias
 const Context = require('./db/strategies/base/ctxStrategy');
 //Bancos
 const MongoDB = require('./db/strategies/mongodb/mongoDB');
@@ -16,7 +28,7 @@ const HapiVision = require('@hapi/vision');
 const HapiInert = require('@hapi/inert');
 const HapiAuthJWT2 = require('hapi-auth-jwt2');
 //JWT SECRETs
-const JWT_SECRET = 'abacate';
+const JWT_SECRET = process.env.JWT_KEY
 
 const server = new Hapi.server({
     port: 8050 || process.env.PORT

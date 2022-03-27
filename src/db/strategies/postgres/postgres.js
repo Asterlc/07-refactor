@@ -31,7 +31,7 @@ class Postgres extends ICrud {
 
     async update(id, item, upsert = false) {
         try {
-            if(upsert){
+            if (upsert) {
                 const [upsertItem] = await this._schema.upsert(item);
                 return item;
             }
@@ -71,19 +71,33 @@ class Postgres extends ICrud {
     }
 
     static connect() {
-        const connection = new Sequelize(
-            'heroes',
-            `${user}`,
-            `${pwd}`,
+
+        const connection = new Sequelize(process.env.POSTGRES_URL,
             {
                 host: 'localhost', //devido ao docker neste caso
                 dialect: 'postgres',
                 quoteIdentifiers: false, //ignorar case sensitive
                 operatorAliases: false, // erros de deprecade ignorados
                 omitNull: false, //necessário para resolver id auto increment
-                logging: false //retirar os logs ne execução
-            }
-        );
+                logging: false, //retirar os logs ne execução
+                ssl: process.env.SSL_DB,
+                dialectOptions: {
+                    ssl:process.env.SSL_DB
+                }
+            });
+        // const connection = new Sequelize(
+        //     'heroes',
+        //     `${user}`,
+        //     `${pwd}`,
+        // {
+        //     host: 'localhost', //devido ao docker neste caso
+        //     dialect: 'postgres',
+        //     quoteIdentifiers: false, //ignorar case sensitive
+        //     operatorAliases: false, // erros de deprecade ignorados
+        //     omitNull: false, //necessário para resolver id auto increment
+        //     logging: false //retirar os logs ne execução
+        // }
+        // );
 
         // await this.defineModel();
         return connection;
