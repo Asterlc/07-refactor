@@ -31,7 +31,7 @@ const HapiAuthJWT2 = require('hapi-auth-jwt2');
 const JWT_SECRET = process.env.JWT_KEY
 
 const server = new Hapi.server({
-    port: 8050 || process.env.PORT
+    port: process.env.PORT || 5000
 });
 
 //methods é um array com os métodos CRUD da instancia da classe usada
