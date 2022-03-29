@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=prod node src/api.js",
     "test": "mocha --timeout 10000 src/tests/*.test.js",
     "test:prod": "cross-env NODE_ENV=prod npm t",
-    "prod": "cross-env NODE_ENV=prod pm2-runtime src/api.js"
+    "prod": "cross-env NODE_ENV=prod pm2-runtime start src/api.js"
   },
   "keywords": [],
   "author": "",
