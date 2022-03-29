@@ -4,10 +4,10 @@
   "description": "docker run `\r     --name postgres `\r     -e POSTGRES_USER= `\r     -e POSTGRES_PASSWORD= `\r     -e POSTGRES_DB=heroes `\r     -p 5432:5432 `\r     -d `\r     postgres",
   "main": "index.js",
   "scripts": {
-    "start":"cross-env NODE_ENV=prod node src/api.js",
+    "start": "cross-env NODE_ENV=prod node src/api.js",
     "test": "mocha --timeout 10000 src/tests/*.test.js",
     "test:prod": "cross-env NODE_ENV=prod npm t",
-    "prod": "cross-env NODE_ENV=prod node src/api.js"
+    "prod": "cross-env NODE_ENV=prod pm2-runtime src/api.js"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,7 @@
     "mongoose": "^6.2.4",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
+    "pm2": "^5.2.0",
     "sequelize": "^6.17.0"
   },
   "devDependencies": {
