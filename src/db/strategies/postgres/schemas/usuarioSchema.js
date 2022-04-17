@@ -17,7 +17,7 @@ const userSchema = {
         password: {
             type: Sequelize.STRING,
             required: true,
-        }
+        },
     },
     options: {
         tableName: 'TB_USUARIOS',

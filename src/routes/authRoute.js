@@ -8,7 +8,6 @@ const MOCK_USER = {
     username: 'tester',
     password: '123456'
 }
-
 class AuthRoutes extends BaseRoute {
     constructor(secret, db) {
         super();

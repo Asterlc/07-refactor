@@ -22,6 +22,7 @@ const UsuarioSchema = require('./db/strategies/postgres/schemas/usuarioSchema');
 //Rotas
 const HeroRoute = require('./routes/heroRoutes');
 const AuthRoute = require('./routes/authRoute');
+const UserRoute = require('./routes/userRoute');
 //Plugins
 const HapiSwagger = require('hapi-swagger');
 const HapiVision = require('@hapi/vision');
@@ -47,14 +48,12 @@ async function main() {
     const model = await Postgres.defineModel(connectionPostgres, UsuarioSchema);
     const ctxPostgres = new Context(new Postgres(connectionPostgres, model));
 
-
     const swaggerOptions = {
         info: {
             title: 'API Herois - Imersão NodeJS',
             version: 'v1.0'
         }
     };
-
     //Registro dos plugins usados na aplicação.
     await server.register([
         HapiAuthJWT2,
@@ -82,7 +81,8 @@ async function main() {
 
     await server.route([
         ...mapRoutes(new HeroRoute(ctxMongoDB), HeroRoute.methods()),
-        ...mapRoutes(new AuthRoute(JWT_SECRET, ctxPostgres), AuthRoute.methods()) //usuários salvos em postgres
+        ...mapRoutes(new AuthRoute(JWT_SECRET, ctxPostgres), AuthRoute.methods()), //usuários salvos em postgres
+        ...mapRoutes(new UserRoute(ctxPostgres),UserRoute.methods())
     ]);
 
     await server.start();

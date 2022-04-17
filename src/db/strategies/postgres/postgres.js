@@ -87,7 +87,7 @@ class Postgres extends ICrud {
                 quoteIdentifiers: false,
                 logging: false,
                 dialectOptions,
-            });            
+            });
         // const connection = new Sequelize(
         //     'heroes',
         //     `${user}`,

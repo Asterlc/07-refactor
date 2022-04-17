@@ -42,7 +42,6 @@ async function main() {
         });
 
         const result = await Herois.findAll({ raw: true })
-        console.log('result', result)
     } catch (error) {
         console.log('error', error)
         throw error
