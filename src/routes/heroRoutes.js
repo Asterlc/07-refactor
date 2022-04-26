@@ -19,7 +19,7 @@ class HeroRoutes extends BaseRoute {
             method: 'GET',
             config: {
                 tags: ['api'],
-                notes:"Listar cadastros da base",
+                notes: "Listar cadastros da base",
                 description: 'Listar cadastros da base',
                 validate: {
                     failAction: (request, headers, error) => {
@@ -37,7 +37,7 @@ class HeroRoutes extends BaseRoute {
                 try {
                     const { skip, limit, nome } = request.query;
                     // let query = nome ? { $regex: `.*${nome}*.` } : {}
-                    let query = { nome: { $regex: `.*${nome}*.` } } 
+                    let query = nome ? { nome: { $regex: `.*${nome}*.` } } : {}
 
                     return this.db.read(query, parseInt(skip), parseInt(limit));
                 } catch (error) {
@@ -54,7 +54,7 @@ class HeroRoutes extends BaseRoute {
             method: 'POST',
             config: {
                 tags: ['api'],
-                notes:"Nome e poder",
+                notes: "Nome e poder",
                 description: 'Cadastrar um herói',
                 validate: {
                     failAction: (request, headers, error) => {
@@ -88,7 +88,7 @@ class HeroRoutes extends BaseRoute {
             method: 'PATCH', //atualização parcial
             config: {
                 tags: ['api'],
-                notes:"Atualizar um herói",
+                notes: "Atualizar um herói",
                 description: 'Encontrar e atualizar',
                 validate: {
                     failAction: (request, headers, error) => {
@@ -135,7 +135,7 @@ class HeroRoutes extends BaseRoute {
                 //     throw error;
                 // },
                 tags: ['api'],
-                notes:"Deletar um herói",
+                notes: "Deletar um herói",
                 description: 'Encontrar e deletar',
                 validate: {
                     headers,
