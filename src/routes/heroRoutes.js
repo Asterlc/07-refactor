@@ -19,8 +19,8 @@ class HeroRoutes extends BaseRoute {
             method: 'GET',
             config: {
                 tags: ['api'],
-                notes: "Listar cadastros da base",
-                description: 'Listar cadastros da base',
+                notes: "Retorna com o array de heróis cadastrados",
+                description: 'Listar Herois',
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -53,8 +53,8 @@ class HeroRoutes extends BaseRoute {
             method: 'POST',
             config: {
                 tags: ['api'],
-                notes: "Nome e poder",
-                description: 'Cadastrar um herói',
+                notes: "Irá cadastrar heroi com nome e poder.Retorna ID cadastrado",
+                description: 'Gerar Herói com nome e poder',
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -87,8 +87,8 @@ class HeroRoutes extends BaseRoute {
             method: 'PATCH', //atualização parcial
             config: {
                 tags: ['api'],
-                notes: "Atualizar um herói",
-                description: 'Encontrar e atualizar',
+                notes: "Deve retornar ID do Heroi atualizado e mensagem de sucesso.",
+                description: 'Atualizar Herói por ID',
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -134,8 +134,8 @@ class HeroRoutes extends BaseRoute {
                 //     throw error;
                 // },
                 tags: ['api'],
-                notes: "Deletar um herói",
-                description: 'Encontrar e deletar',
+                notes: "Deve retornar ID do Heroi deletado e mensagem de sucesso.",
+                description: 'Encontrar e deletar um heroi permanentemente da base',
                 validate: {
                     headers,
                     params: Joi.object({

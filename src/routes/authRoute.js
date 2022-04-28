@@ -23,7 +23,7 @@ class AuthRoutes extends BaseRoute {
                 auth: false,
                 tags: ['api'],
                 description: 'Obter token',
-                notes: 'Faz login com usuário e senha',
+                notes: 'Necessário ter usuário cadastrado. Irá retornar token de autorização.',
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
