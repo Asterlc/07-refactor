@@ -33,12 +33,12 @@ class HeroRoutes extends BaseRoute {
                     }),
                 }
             },
-            handler: (request, headers) => {
+            handler: async (request, headers) => {
                 try {
-                    ///^[a-záàâãéèêíïóôõöúçñ ]+$/i
                     const { skip, limit, nome } = request.query;
-                    let query = nome ? { $regex: `/${nome}/i` } : {}
-                    return this.db.read(query, parseInt(skip), parseInt(limit));
+                    let query = nome ? { nome: { $regex: `.*${nome}*.` } } : {};
+                    return await this.db.read(query, parseInt(skip), parseInt(limit));
+
                 } catch (error) {
                     console.log('Error heroRoutes:>>', error);
                     return Boom.internal();

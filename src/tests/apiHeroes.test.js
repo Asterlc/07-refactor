@@ -57,10 +57,10 @@ describe('Suite de testes da API', function () {
         MOCK_ID_DELETAR = dataDelete._id;
     });
 
-    it('listar /herois', async function () {
+    it.only('listar /herois', async function () {
         const result = await app.inject({
             method: 'GET',
-            url: '/herois?skip=0&limit=0',
+            url: '/herois?skip=0&limit=10',
             headers,
         });
         const data = JSON.parse(result.payload); //converte para um obj javascript

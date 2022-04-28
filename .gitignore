@@ -3,3 +3,6 @@ access
 scripts
 DS_Store
 package-lock.json
+config
+.env.dev
+.env.prod
