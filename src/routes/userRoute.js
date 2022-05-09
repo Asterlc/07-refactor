@@ -17,9 +17,9 @@ class UserRoute extends BaseRoute {
             method: 'POST',
             config: {
                 auth: false,
+                description:'Cadastrar usuário único para consulta',
                 tags: ['api'],
-                notes: "nome e senha com máximo de 15 caracteres",
-                description: 'Cadastrar um usuário',
+                notes: "Todos os usuários são cadastrados em lowercase, seu username será retornado",
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;

@@ -19,8 +19,8 @@ class HeroRoutes extends BaseRoute {
             method: 'GET',
             config: {
                 tags: ['api'],
-                notes:"Listar cadastros da base",
-                description: 'Listar cadastros da base',
+                notes: "Retorna com o array de heróis cadastrados",
+                description: ' Herois',
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -33,12 +33,13 @@ class HeroRoutes extends BaseRoute {
                     }),
                 }
             },
-            handler: (request, headers) => {
+            handler: async (request, headers) => {
                 try {
                     const { skip, limit, nome } = request.query;
-                    let query = nome ? { $regex: `.*${nome}*.` } : {}
+                    let query = nome ? { nome: { $regex: `.*${nome}*.`, $options: 'i' } } : {};
+                    console.log('query', query)
+                    return await this.db.read(query, parseInt(skip), parseInt(limit));
 
-                    return this.db.read(query, parseInt(skip), parseInt(limit));
                 } catch (error) {
                     console.log('Error heroRoutes:>>', error);
                     return Boom.internal();
@@ -53,8 +54,8 @@ class HeroRoutes extends BaseRoute {
             method: 'POST',
             config: {
                 tags: ['api'],
-                notes:"Nome e poder",
-                description: 'Cadastrar um herói',
+                notes: "Irá cadastrar heroi com nome e poder.Retorna ID cadastrado",
+                description: 'Gerar Herói com nome e poder',
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -87,8 +88,8 @@ class HeroRoutes extends BaseRoute {
             method: 'PATCH', //atualização parcial
             config: {
                 tags: ['api'],
-                notes:"Atualizar um herói",
-                description: 'Encontrar e atualizar',
+                notes: "Deve retornar ID do Heroi atualizado e mensagem de sucesso.",
+                description: 'Atualizar Herói por ID',
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -134,8 +135,8 @@ class HeroRoutes extends BaseRoute {
                 //     throw error;
                 // },
                 tags: ['api'],
-                notes:"Deletar um herói",
-                description: 'Encontrar e deletar',
+                notes: "Deve retornar ID do Heroi deletado e mensagem de sucesso.",
+                description: 'Encontrar e deletar um heroi permanentemente da base',
                 validate: {
                     headers,
                     params: Joi.object({
