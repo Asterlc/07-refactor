@@ -57,7 +57,7 @@ describe('Suite de testes da API', function () {
         MOCK_ID_DELETAR = dataDelete._id;
     });
 
-    it.only('listar /herois', async function () {
+    it('listar /herois', async function () {
         const result = await app.inject({
             method: 'GET',
             url: '/herois?skip=0&limit=10',

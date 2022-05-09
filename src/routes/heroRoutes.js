@@ -20,7 +20,7 @@ class HeroRoutes extends BaseRoute {
             config: {
                 tags: ['api'],
                 notes: "Retorna com o array de heróis cadastrados",
-                description: 'Listar Herois',
+                description: ' Herois',
                 validate: {
                     failAction: (request, headers, error) => {
                         throw error;
@@ -36,7 +36,8 @@ class HeroRoutes extends BaseRoute {
             handler: async (request, headers) => {
                 try {
                     const { skip, limit, nome } = request.query;
-                    let query = nome ? { nome: { $regex: `.*${nome}*.` } } : {};
+                    let query = nome ? { nome: { $regex: `.*${nome}*.`, $options: 'i' } } : {};
+                    console.log('query', query)
                     return await this.db.read(query, parseInt(skip), parseInt(limit));
 
                 } catch (error) {
